@@ -17,8 +17,6 @@ impl Keyboard {
     pub fn is_pressed(&self, n: usize) -> bool {
         println!("checking for key {n:}");
         self.keys[n]
-        // thread_rng().gen_bool(0.5)
-        // false
     }
 
     pub fn get_pressed(&self) -> Option<u8> {

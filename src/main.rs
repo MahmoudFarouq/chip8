@@ -29,7 +29,7 @@ fn main() {
     .build()
     .unwrap();
 
-    let f = read("pong.ch8").expect("file not found");
+    let f = read("chipquarium.ch8").expect("file not found");
 
     let mut screen = Screen::new();
     let mut keyboard = Keyboard::new();
@@ -47,16 +47,38 @@ fn main() {
 
         if let Some(Button::Keyboard(key)) = event.press_args() {
             match key {
-                Key::Up => keyboard.press(1),
-                Key::Down => keyboard.press(4),
+                Key::Up => {
+                    keyboard.press(1);
+                    keyboard.press(2);
+                },
+                Key::Down => {
+                    keyboard.press(4);
+                    keyboard.press(8);
+                },
+                Key::W => keyboard.press(11),
+                Key::A => keyboard.press(12),
+                Key::S => keyboard.press(13),
+                Key::D => keyboard.press(14),
+                Key::Space => keyboard.press(15),
                 _ => {}
             }
         }
 
         if let Some(Button::Keyboard(key)) = event.release_args() {
             match key {
-                Key::Up => keyboard.release(1),
-                Key::Down => keyboard.release(4),
+                Key::Up => {
+                    keyboard.release(1);
+                    keyboard.release(2);
+                },
+                Key::Down => {
+                    keyboard.release(4);
+                    keyboard.release(8);
+                },
+                Key::W => keyboard.release(11),
+                Key::A => keyboard.release(12),
+                Key::S => keyboard.release(13),
+                Key::D => keyboard.release(14),
+                Key::Space => keyboard.release(15),
                 _ => {}
             }
         }
@@ -68,7 +90,7 @@ fn main() {
                     match screen.get(j, i) {
                         x if x > 0 => {
                             let x = x as f32 / 100.0;
-                            let clr: Color = [x, 0.3, 0.4, 1.0];
+                            let clr: Color = [x, x, x, 1.0];
                             draw_block(clr, j as i32, i as i32, &c, g);
                         }
                         _ => {}

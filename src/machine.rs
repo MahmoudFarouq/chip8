@@ -43,10 +43,6 @@ impl Machine {
         self.ram[start..end].copy_from_slice(rom);
     }
 
-    fn delay_timer() {}
-
-    fn sound_timer() {}
-
     pub fn step(&mut self, keyboard: &Keyboard, screen: &mut Screen) {
         let ins: u16 = ((self.ram[self.pc] as usize) << 8 | self.ram[self.pc + 1] as usize) as u16;
 
@@ -139,8 +135,8 @@ impl Machine {
                 } else {
                     self.registers[0xf] = 0;
                 }
-                self.registers[x as usize] =
-                    self.registers[y as usize] - self.registers[x as usize];
+
+                (self.registers[x as usize], _) = self.registers[y as usize].overflowing_sub(self.registers[x as usize]);
             }
             Instruction::Shl(x, _y) => {
                 // TODO: what to do with Y??
@@ -149,7 +145,7 @@ impl Machine {
                 } else {
                     self.registers[0xf] = 0;
                 }
-                self.registers[x as usize] *= 2;
+                (self.registers[x as usize], _) = self.registers[x as usize].overflowing_mul(2);
             }
             Instruction::Sne(x, y) => {
                 if self.registers[x as usize] != self.registers[y as usize] {
@@ -278,97 +274,97 @@ mod tests {
 }
 
 const NUMBERS: [u8; 5 * 16] = [
-    /// 0
+    // 0
     0b11110000,
     0b10010000,
     0b10010000,
     0b10010000,
     0b11110000,
-    /// 1
+    // 1
     0b00100000,
     0b01100000,
     0b00100000,
     0b00100000,
     0b01110000,
-    /// 2
+    // 2
     0b11110000,
     0b00010000,
     0b11110000,
     0b10000000,
     0b11110000,
-    /// 3
+    // 3
     0b11110000,
     0b00010000,
     0b11110000,
     0b00010000,
     0b11110000,
-    /// 4
+    // 4
     0b10010000,
     0b10010000,
     0b11110000,
     0b00010000,
     0b00010000,
-    /// 5
+    // 5
     0b11110000,
     0b10000000,
     0b11110000,
     0b00010000,
     0b11110000,
-    /// 6
+    // 6
     0b11110000,
     0b10000000,
     0b11110000,
     0b10010000,
     0b11110000,
-    /// 7
+    // 7
     0b11110000,
     0b00010000,
     0b00100000,
     0b01000000,
     0b01000000,
-    /// 8
+    // 8
     0b11110000,
     0b10010000,
     0b11110000,
     0b10010000,
     0b11110000,
-    /// 9
+    // 9
     0b11110000,
     0b10010000,
     0b11110000,
     0b00010000,
     0b11110000,
-    /// A
+    // A
     0b11110000,
     0b10010000,
     0b11110000,
     0b10010000,
     0b10010000,
-    /// B
+    // B
     0b11100000,
     0b10010000,
     0b11100000,
     0b10010000,
     0b11100000,
-    /// C
+    // C
     0b11110000,
     0b10000000,
     0b10000000,
     0b10000000,
     0b11110000,
-    /// D
+    // D
     0b11100000,
     0b10010000,
     0b10010000,
     0b10010000,
     0b11100000,
-    /// E
+    // E
     0b11110000,
     0b10000000,
     0b11110000,
     0b10000000,
     0b11110000,
-    /// F
+    // F
     0b11110000,
     0b10000000,
     0b11110000,
