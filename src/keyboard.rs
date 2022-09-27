@@ -3,6 +3,7 @@
 // 7	8	9	E
 // A	0	B	F
 
+use rand::{thread_rng, Rng};
 
 pub struct Keyboard {
     keys: [bool; 16],
@@ -10,14 +11,14 @@ pub struct Keyboard {
 
 impl Keyboard {
     pub fn new() -> Self {
-        Keyboard {
-            keys: [false; 16]
-        }
+        Keyboard { keys: [false; 16] }
     }
 
     pub fn is_pressed(&self, n: usize) -> bool {
-        // self.keys[n]
-        true
+        println!("checking for key {n:}");
+        self.keys[n]
+        // thread_rng().gen_bool(0.5)
+        // false
     }
 
     pub fn get_pressed(&self) -> Option<u8> {
@@ -30,11 +31,11 @@ impl Keyboard {
         None
     }
 
-    fn press(&mut self, n: usize) {
+    pub fn press(&mut self, n: usize) {
         self.keys[n] = true
     }
 
-    fn release(&mut self, n: usize) {
+    pub fn release(&mut self, n: usize) {
         self.keys[n] = false
     }
 }

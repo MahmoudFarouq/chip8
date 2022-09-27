@@ -93,7 +93,14 @@ impl Machine {
             }
             Instruction::Add(x, kk) => {
                 // TODO: we will make it doesn't overflow just to pass the panic but this should work like this.
-                (self.registers[x as usize], _) = self.registers[x as usize].overflowing_add(kk);
+                let r = self.registers[x as usize];
+
+                let (res, overflowed) = r.overflowing_add(kk);
+                // if overflowed {
+                //     println!("overflowed");
+                // }
+
+                self.registers[x as usize] = res;
             }
             Instruction::Load(x, y) => {
                 self.registers[x as usize] = self.registers[y as usize];
