@@ -1,4 +1,4 @@
-use crate::instructions::{kk, Instruction};
+use crate::instructions::{Instruction};
 use crate::keyboard::Keyboard;
 use crate::screen::Screen;
 use rand::random;
@@ -95,7 +95,7 @@ impl Machine {
                 // TODO: we will make it doesn't overflow just to pass the panic but this should work like this.
                 let r = self.registers[x as usize];
 
-                let (res, overflowed) = r.overflowing_add(kk);
+                let (res, _overflowed) = r.overflowing_add(kk);
                 // if overflowed {
                 //     println!("overflowed");
                 // }
@@ -128,7 +128,7 @@ impl Machine {
                 (self.registers[x as usize], _) =
                     self.registers[x as usize].overflowing_sub(self.registers[y as usize]);
             }
-            Instruction::Shr(x, y) => {
+            Instruction::Shr(x, _y) => {
                 // TODO: what to do with Y??
                 self.registers[0xf] = self.registers[x as usize] & 0x1;
                 self.registers[x as usize] /= 2;
@@ -142,7 +142,7 @@ impl Machine {
                 self.registers[x as usize] =
                     self.registers[y as usize] - self.registers[x as usize];
             }
-            Instruction::Shl(x, y) => {
+            Instruction::Shl(x, _y) => {
                 // TODO: what to do with Y??
                 if (self.registers[x as usize] as usize) >> 0xf & 0x1 == 1 {
                     self.registers[0xf] = 1;

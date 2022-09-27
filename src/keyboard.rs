@@ -3,7 +3,7 @@
 // 7	8	9	E
 // A	0	B	F
 
-use rand::{thread_rng, Rng};
+
 
 pub struct Keyboard {
     keys: [bool; 16],

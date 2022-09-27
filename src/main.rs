@@ -40,12 +40,10 @@ fn main() {
     let mut last_tick = Instant::now();
 
     while let Some(event) = window.next() {
-        if last_tick.elapsed() < Duration::from_nanos(EMULATOR_RATE) {
-            continue;
+        if last_tick.elapsed() >= Duration::from_nanos(EMULATOR_RATE) {
+            machine.step(&keyboard, &mut screen);
+            last_tick = Instant::now();
         }
-
-        machine.step(&keyboard, &mut screen);
-        last_tick = Instant::now();
 
         if let Some(Button::Keyboard(key)) = event.press_args() {
             match key {
@@ -78,10 +76,6 @@ fn main() {
                 }
             }
         });
-
-        // event.update(|arg| {
-        //     game.update(arg.dt);
-        // });
     }
 }
 
